@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Algoritmos de Búsqueda — Laboratorio Interactivo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./src/css/styles.css">
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="shell">
+
+  <div class="brand" onclick="goTo('home')">
+    <span class="dot"></span> TEMAS <small>// Búsquedas & Grafos</small>
+  </div>
+
+  <div class="tape" id="tape"></div>
+
+  <!-- ============ INICIO ============ -->
+  <section class="screen" data-screen="home">
+    <h1 class="page-title">Ciencias de la Computacion II</h1>
+    <div class="choice-grid">
+      <div class="choice-card" tabindex="0" onclick="goTo('busquedas')">
+        <div class="glyph">🔍</div>
+        <h3>Búsquedas</h3>
+        <span class="go">Entrar →</span>
+      </div>
+      <div class="choice-card" tabindex="0" onclick="goTo('grafos')">
+        <div class="glyph">◈</div>
+        <h3>Grafos</h3>
+        <span class="go">Entrar →</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ GRAFOS ============ -->
+  <section class="screen" data-screen="grafos">
+    <button class="back-btn" onclick="goTo('home')">← Volver al Inicio</button>
+    <h1 class="page-title">Grafos</h1>
+    <div class="placeholder-box">
+      <strong>Próximamente</strong>
+      Esta sección se construirá cuando estén definidos los algoritmos de grafos a mostrar.
+    </div>
+  </section>
+
+  <!-- ============ BÚSQUEDAS ============ -->
+  <section class="screen" data-screen="busquedas">
+    <button class="back-btn" onclick="goTo('home')">← Volver al Inicio</button>
+    <h1 class="page-title">Búsquedas</h1>
+    <div class="choice-grid">
+      <div class="choice-card" tabindex="0" onclick="goTo('internas')">
+        <div class="glyph">▦</div>
+        <h3>Internas</h3>
+        <span class="go">Entrar →</span>
+      </div>
+      <div class="choice-card" tabindex="0" onclick="goTo('externas')">
+        <div class="glyph">⛁</div>
+        <h3>Externas</h3>
+        <span class="go">Entrar →</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ EXTERNAS (Menú) ============ -->
+  <section class="screen" data-screen="externas">
+    <button class="back-btn" onclick="goTo('busquedas')">← Volver a Búsquedas</button>
+    <h1 class="page-title">Búsquedas Externas</h1>
+    <div class="choice-grid">
+      <div class="choice-card" tabindex="0" onclick="goTo('ext-secuencial')">
+        <div class="glyph">📁</div>
+        <h3>Secuencial</h3>
+        <span class="go">Entrar →</span>
+      </div>
+      <div class="choice-card" tabindex="0" onclick="goTo('ext-binaria')">
+        <div class="glyph">🗂️</div>
+        <h3>Binaria</h3>
+        <span class="go">Entrar →</span>
+      </div>
+      <div class="choice-card" tabindex="0" onclick="goTo('ext-hash')">
+        <div class="glyph">🔐</div>
+        <h3>Hash Estático</h3>
+        <span class="go">Entrar →</span>
+      </div>
+      <div class="choice-card" tabindex="0" onclick="goTo('ext-hash-dinamico')">
+        <div class="glyph">📈</div>
+        <h3>Hash Dinámico</h3>
+        <span class="go">Entrar →</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ EXTERNAS: PLACEHOLDERS ============ -->
+<!-- ============ SECUENCIAL EXTERNA ============ -->
+  <section class="screen" data-screen="ext-secuencial">
+    <button class="back-btn" onclick="goTo('externas')">← Volver a Externas</button>
+    <h1 class="page-title">Secuencial Externa (Bloques e Índices)</h1>
+
+    <div class="demo-layout">
+      <!-- Panel de Control y RAM (min-width: 0 evita el desbordamiento horizontal) -->
+      <div style="display: flex; flex-direction: column; gap: 16px; min-width: 0;">
+        <div class="panel">
+          <h4>Configuración del Archivo</h4>
+          <div class="controls-row">
+            <span class="field-label">Total Registros (N):</span>
+            <input type="number" id="extSeqN" value="16" min="4" max="100" step="1">
+            <span class="m-readout" id="extSeqBlockSize">Bloque = 4</span>
+            <button class="btn" onclick="ExtSeq.generate()">↻ Generar Disco</button>
+          </div>
+          <div class="controls-row">
+            <span class="field-label">o ingresa el tuyo:</span>
+            <input type="text" id="extSeqManualInput" placeholder="Ej. 5, 12, 8, 21" style="width:220px;">
+            <button class="btn" onclick="ExtSeq.useManualArray()">✎ Usar mi arreglo</button>
+          </div>
+          <div class="controls-row">
+            <span class="field-label">Objetivo:</span>
+            <input type="number" id="extSeqTarget" placeholder="Ej. 42">
+            <button class="btn primary" onclick="ExtSeq.start(false)">▶ Búsqueda por Bloques</button>
+            <button class="btn primary ghost" onclick="ExtSeq.start(true)" style="border-color:var(--accent-scan); color:var(--accent-scan);">▶ Búsqueda con Índices</button>
+          </div>
+          <div class="status-line" id="extSeqStatus">Genera un archivo para comenzar.</div>
+        </div>
+
+        <div class="panel">
+          <h4>Memoria Principal (RAM) - Bloque Cargado</h4>
+          <!-- Altura fija de 90px para evitar saltos en la interfaz -->
+          <div class="track" style="height: 90px; display: flex; align-items: center; justify-content: center; background: var(--bg-panel-2); border-radius: var(--radius); border: 1px dashed var(--border-soft); overflow-x: auto;">
+            <div class="cells-row" id="extSeqRam" style="min-height: 52px; display: flex; align-items: center;">
+              <span style="color:var(--text-dim); font-size:12px; font-family:'JetBrains Mono',monospace;">(La RAM está vacía)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h4>Registro de Ejecución (I/O)</h4>
+          <div class="log" id="extSeqLog" style="height: 180px;"></div>
+        </div>
+      </div>
+
+      <!-- Panel de Disco e Índices (min-width: 0 evita el desbordamiento horizontal) -->
+      <div style="display: flex; flex-direction: column; gap: 16px; min-width: 0;">
+        <div class="panel">
+          <h4>Almacenamiento Secundario (Disco)</h4>
+          <div class="disk-track" id="extSeqDisk"></div>
+        </div>
+
+        <div class="panel">
+          <h4>Tabla de Índices (RAM)</h4>
+          <div class="index-table-wrap">
+            <table class="index-table">
+              <thead>
+                <tr>
+                  <th>Bloque ID</th>
+                  <th>Clave Mayor</th>
+                </tr>
+              </thead>
+              <tbody id="extSeqIndex"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- ============ BINARIA EXTERNA ============ -->
+  <section class="screen" data-screen="ext-binaria">
+    <button class="back-btn" onclick="goTo('externas')">← Volver a Externas</button>
+    <h1 class="page-title">Binaria Externa (Sobre Bloques)</h1>
+
+    <div class="demo-layout">
+      <!-- Panel de Control y RAM (min-width: 0 evita el desbordamiento horizontal) -->
+      <div style="display: flex; flex-direction: column; gap: 16px; min-width: 0;">
+        <div class="panel">
+          <h4>Configuración del Archivo</h4>
+          <div class="controls-row">
+            <span class="field-label">Total Registros (N):</span>
+            <input type="number" id="extBinN" value="25" min="4" max="100" step="1">
+            <span class="m-readout" id="extBinBlockSize">Bloque = 5</span>
+            <button class="btn" onclick="ExtBin.generate()">↻ Generar Disco</button>
+          </div>
+          <div class="controls-row">
+            <span class="field-label">Objetivo:</span>
+            <input type="number" id="extBinTarget" placeholder="Ej. 65">
+            <button class="btn primary" onclick="ExtBin.start()">▶ Iniciar Búsqueda</button>
+          </div>
+          <div class="status-line" id="extBinStatus">Genera un archivo ordenado para comenzar.</div>
+        </div>
+
+        <div class="panel">
+          <h4>Memoria Principal (RAM) - Bloque Cargado</h4>
+          <!-- Altura fija de 90px para evitar saltos CLS -->
+          <div class="track" style="height: 90px; display: flex; align-items: center; justify-content: center; background: var(--bg-panel-2); border-radius: var(--radius); border: 1px dashed var(--border-soft); overflow-x: auto;">
+            <div class="cells-row" id="extBinRam" style="min-height: 52px; display: flex; align-items: center;">
+              <span style="color:var(--text-dim); font-size:12px; font-family:'JetBrains Mono',monospace;">(La RAM está vacía)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h4>Registro de Ejecución (I/O)</h4>
+          <div class="log" id="extBinLog" style="height: 180px;"></div>
+        </div>
+      </div>
+
+      <!-- Panel de Disco (min-width: 0 evita el desbordamiento horizontal) -->
+      <div style="display: flex; flex-direction: column; gap: 16px; min-width: 0;">
+        <div class="panel">
+          <h4>Almacenamiento Secundario (Disco)</h4>
+          <div class="disk-track" id="extBinDisk"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- ============ HASH ESTÁTICO EXTERNO ============ -->
+  <section class="screen" data-screen="ext-hash">
+    <button class="back-btn" onclick="goTo('externas')">← Volver a Externas</button>
+    <h1 class="page-title">Hash Estático (Bloques y Cubetas)</h1>
+
+    <div class="demo-layout">
+      <!-- Panel Izquierdo: Control, Matemáticas y RAM -->
+      <div style="display: flex; flex-direction: column; gap: 16px; min-width: 0;">
+        <div class="panel">
+          <h4>Configuración y Operaciones</h4>
+          <div class="controls-row">
+            <span class="field-label">Método:</span>
+            <select id="extHashMethod" onchange="ExtHash.generate()">
+              <option value="modulo">Módulo (K mod M)</option>
+              <option value="cuadrado">Mitad del Cuadrado</option>
+              <option value="truncamiento">Truncamiento</option>
+              <option value="plegamiento">Plegamiento</option>
+              <option value="bases">Conversión de Bases</option>
+            </select>
+            <span class="field-label">Cubetas (M):</span>
+            <input type="number" id="extHashM" value="7" min="2" max="20" style="width: 60px;" onchange="ExtHash.generate()">
+            <span class="field-label">Capacidad (b):</span>
+            <input type="number" id="extHashB" value="4" min="1" max="10" style="width: 60px;" onchange="ExtHash.generate()">
+          </div>
+          <div class="controls-row" style="margin-top: 10px;">
+            <button class="btn" onclick="ExtHash.generate()">↻ Limpiar Disco</button>
+            <input type="number" id="extHashKey" placeholder="Ej. 1234">
+            <button class="btn primary" onclick="ExtHash.insert()">+ Insertar</button>
+            <button class="btn primary ghost" onclick="ExtHash.search()" style="border-color:var(--accent-scan); color:var(--accent-scan);">🔍 Buscar</button>
+          </div>
+          <div class="status-line" id="extHashStatus">Configura la tabla e inserta claves para comenzar.</div>
+        </div>
+
+        <div class="panel">
+          <h4>Transformación Hash</h4>
+          <div class="calc-strip" id="extHashCalc">
+             <div class="calc-box"><span class="calc-label">Clave (K)</span><span class="calc-val" id="ehCalcKey">—</span></div>
+             <div class="calc-arrow">→</div>
+             <div class="calc-box wide" style="min-width: 250px;"><span class="calc-label">Operación Matemática</span><span class="calc-val" id="ehCalcOp" style="font-size:12px;">—</span></div>
+             <div class="calc-arrow">→</div>
+             <div class="calc-box"><span class="calc-label">Cubeta ID</span><span class="calc-val" id="ehCalcResult">—</span></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h4>Memoria Principal (RAM) - Cubeta Cargada</h4>
+          <div class="track" style="height: 90px; display: flex; align-items: center; justify-content: center; background: var(--bg-panel-2); border-radius: var(--radius); border: 1px dashed var(--border-soft); overflow-x: auto;">
+            <div class="cells-row" id="extHashRam" style="min-height: 52px; display: flex; align-items: center;">
+              <span style="color:var(--text-dim); font-size:12px; font-family:'JetBrains Mono',monospace;">(La RAM está vacía)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel Derecho: Log y Disco -->
+      <div style="display: flex; flex-direction: column; gap: 16px; min-width: 0;">
+        <div class="panel">
+          <h4>Registro de Ejecución (I/O)</h4>
+          <div class="log" id="extHashLog" style="height: 180px;"></div>
+        </div>
+
+        <div class="panel">
+          <h4>Almacenamiento Secundario (Disco)</h4>
+          <div class="disk-track" id="extHashDisk"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- ============ HASH DINÁMICO EXTERNO ============ -->
+  <section class="screen" data-screen="ext-hash-dinamico">
+    <button class="back-btn" onclick="goTo('externas')">← Volver a Externas</button>
+    <h1 class="page-title">Hash Dinámico (Expansiones y Reducciones)</h1>
+
+    <div class="demo-layout">
+      <!-- Panel Izquierdo: Control y Métricas -->
+      <div style="display: flex; flex-direction: column; gap: 16px; min-width: 0;">
+        <div class="panel">
+          <h4>Configuración y Operaciones</h4>
+          <div class="controls-row">
+            <span class="field-label">Estrategia:</span>
+            <select id="ehdStrategy" onchange="ExtHashDin.generate()">
+              <option value="total">Total (Expansión x2 / Reducción ÷2)</option>
+              <option value="parcial">Parcial (Expansión +50% / Reducción -33%)</option>
+            </select>
+            <span class="field-label">Cubetas Iniciales:</span>
+            <input type="number" id="ehdInitialM" value="4" min="2" max="10" style="width: 60px;" onchange="ExtHashDin.generate()">
+            <span class="field-label">Capacidad por Cubeta:</span>
+            <input type="number" id="ehdB" value="3" min="1" max="10" style="width: 60px;" onchange="ExtHashDin.generate()">
+          </div>
+          <div class="controls-row" style="margin-top: 10px;">
+            <button class="btn" onclick="ExtHashDin.generate()">↻ Reiniciar</button>
+            <input type="number" id="ehdKey" placeholder="Ej. 42">
+            <button class="btn primary" onclick="ExtHashDin.insert()">+ Insertar</button>
+            <button class="btn primary ghost" onclick="ExtHashDin.remove()" style="border-color:var(--accent-collision); color:var(--accent-collision);">🗑 Eliminar</button>
+          </div>
+          <div class="status-line" id="ehdStatus">Configura la estrategia e inserta claves para comenzar.</div>
+        </div>
+
+        <div class="panel">
+          <h4>Métricas de Densidad (Trigger)</h4>
+          <div class="calc-strip">
+             <div class="calc-box"><span class="calc-label">Total Claves</span><span class="calc-val" id="ehdKeysCount">0</span></div>
+             <div class="calc-box"><span class="calc-label">Cubetas (M)</span><span class="calc-val" id="ehdCurrentM">4</span></div>
+             <div class="calc-box wide"><span class="calc-label">Densidad Ocupación</span><span class="calc-val" id="ehdDensity">0.0%</span></div>
+          </div>
+          
+          <!-- Barra de densidad visual -->
+          <div style="width: 100%; height: 10px; background: var(--bg-panel-2); border-radius: 999px; overflow: hidden; margin-top: 14px; border: 1px solid var(--border);">
+            <div id="ehdDensityBar" style="height: 100%; width: 0%; background: var(--accent-found); transition: width 0.4s ease, background-color 0.4s ease;"></div>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 10.5px; color: var(--text-dim); margin-top: 6px; font-family:'JetBrains Mono',monospace;">
+            <span>0%</span>
+            <span style="color: var(--accent-scan);">Reducción < 50%</span>
+            <span style="color: var(--accent-collision);">Expansión > 75%</span>
+            <span>100%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel Derecho: Log y Disco -->
+      <div style="display: flex; flex-direction: column; gap: 16px; min-width: 0;">
+        <div class="panel">
+          <h4>Registro de Reestructuración (I/O)</h4>
+          <div class="log" id="ehdLog" style="height: 140px;"></div>
+        </div>
+
+        <div class="panel">
+          <h4>Almacenamiento Secundario (Disco)</h4>
+          <div class="disk-track" id="ehdDisk" style="max-height: 350px; overflow-y: auto;"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ INTERNAS (Menú) ============ -->
+  <section class="screen" data-screen="internas">
+    <button class="back-btn" onclick="goTo('busquedas')">← Volver a Búsquedas</button>
+    <h1 class="page-title">Búsquedas Internas</h1>
+    <div class="choice-grid">
+      <div class="choice-card" tabindex="0" onclick="goTo('secuencial')">
+        <div class="glyph">→</div>
+        <h3>Secuencial</h3>
+        <span class="go">Ver Demo →</span>
+      </div>
+      <div class="choice-card" tabindex="0" onclick="goTo('binaria')">
+        <div class="glyph">⇥⇤</div>
+        <h3>Binaria</h3>
+        <span class="go">Ver Demo →</span>
+      </div>
+      <div class="choice-card" tabindex="0" onclick="goTo('hashmaps')">
+        <div class="glyph">▤</div>
+        <h3>Hashmaps</h3>
+        <span class="go">Ver Demo →</span>
+      </div>
+            <div class="choice-card" tabindex="0" onclick="goTo('arbol')">
+        <div class="glyph">🌳</div>
+        <h3>Árbol de Búsquedas</h3>
+        <span class="go">Ver Demo →</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ÁRBOL DE BÚSQUEDAS (Menú) ============ -->
+  <section class="screen" data-screen="arbol">
+    <button class="back-btn" onclick="goTo('internas')">← Volver a Internas</button>
+    <h1 class="page-title">Árbol de Búsquedas</h1>
+    <div class="choice-grid">
+      <div class="choice-card" tabindex="0" onclick="goTo('busqueda-digital')">
+        <div class="glyph">🔢</div>
+        <h3>Búsqueda Digital</h3>
+        <span class="go">Ver Demo →</span>
+      </div>
+      <div class="choice-card" tabindex="0" onclick="goTo('busqueda-residuos')">
+        <div class="glyph">➗</div>
+        <h3>Búsqueda por Residuos</h3>
+        <span class="go">Ver Demo →</span>
+      </div>
+      <div class="choice-card" tabindex="0" onclick="goTo('busqueda-residuos-multiples')">
+        <div class="glyph">🧮</div>
+        <h3>Residuos Múltiples</h3>
+        <span class="go">Ver Demo →</span>
+      </div>
+      <div class="choice-card" tabindex="0" onclick="goTo('arbol-huffman')">
+        <div class="glyph">🌲</div>
+        <h3>Árbol de Huffman</h3>
+        <span class="go">Ver Demo →</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BÚSQUEDA DIGITAL ============ -->
+  <section class="screen" data-screen="busqueda-digital">
+    <button class="back-btn" onclick="goTo('arbol')">← Volver a Árbol de Búsquedas</button>
+    <h1 class="page-title">Búsqueda Digital</h1>
+    <p class="page-sub">Cada letra se codifica según su posición en el alfabeto (A=1 … Z=26) en binario de 5 bits. Las letras se insertan en el orden en que aparecen en la palabra: en el nivel 1 se compara el 1º bit, en el nivel 2 el 2º bit, y así sucesivamente. Bit <b>0</b> = izquierda, bit <b>1</b> = derecha.</p>
+
+    <div class="demo-layout">
+      <div class="panel">
+        <h4>Árbol de Búsqueda Digital</h4>
+        <div class="controls-row">
+          <span class="field-label">Palabra:</span>
+          <input type="text" id="digitalWordInput" placeholder="Ej. PRUEBA" value="PRUEBA" style="width:220px; text-transform:uppercase;">
+          <button class="btn primary" onclick="Digital.build()">▶ Generar Árbol</button>
+        </div>
+        <div class="status-line" id="digitalStatus">Escribe una palabra y pulsa generar para ver cómo se insertan sus letras.</div>
+        <div class="letter-strip" id="digitalStrip"></div>
+        <div class="tree-scroll">
+          <div id="digitalTree"></div>
+        </div>
+      </div>
+      <div>
+        <div class="panel">
+          <h4>Pseudocódigo</h4>
+          <pre class="pcode" id="digitalPcode"></pre>
+        </div>
+        <div class="panel">
+          <h4>Registro de Ejecución</h4>
+          <div class="log" id="digitalLog"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BÚSQUEDA POR RESIDUOS ============ -->
+  <section class="screen" data-screen="busqueda-residuos">
+    <button class="back-btn" onclick="goTo('arbol')">← Volver a Árbol de Búsquedas</button>
+    <h1 class="page-title">Búsqueda por Residuos</h1>
+    <div class="placeholder-box">
+      <strong>Próximamente</strong>
+      Esta sección se construirá cuando definamos cómo funciona este algoritmo.
+    </div>
+  </section>
+
+  <!-- ============ BÚSQUEDA POR RESIDUOS MÚLTIPLES ============ -->
+  <section class="screen" data-screen="busqueda-residuos-multiples">
+    <button class="back-btn" onclick="goTo('arbol')">← Volver a Árbol de Búsquedas</button>
+    <h1 class="page-title">Búsqueda por Residuos Múltiples</h1>
+    <div class="placeholder-box">
+      <strong>Próximamente</strong>
+      Esta sección se construirá cuando definamos cómo funciona este algoritmo.
+    </div>
+  </section>
+
+  <!-- ============ ÁRBOL DE HUFFMAN ============ -->
+  <section class="screen" data-screen="arbol-huffman">
+    <button class="back-btn" onclick="goTo('arbol')">← Volver a Árbol de Búsquedas</button>
+    <h1 class="page-title">Árbol de Huffman</h1>
+    <div class="placeholder-box">
+      <strong>Próximamente</strong>
+      Esta sección se construirá cuando definamos cómo funciona este algoritmo.
+    </div>
+  </section>
+
+  <!-- ============ SECUENCIAL (Interna) ============ -->
+  <section class="screen" data-screen="secuencial">
+    <button class="back-btn" onclick="goTo('internas')">← Volver a Internas</button>
+    <h1 class="page-title">Búsqueda Secuencial</h1>
+
+    <div class="demo-layout">
+      <div class="panel">
+        <h4>Arreglo</h4>
+        <div class="controls-row">
+          <button class="btn" onclick="Seq.newArray()">↻ Nuevo Arreglo</button>
+          <span class="field-label">o ingresa el tuyo:</span>
+          <input type="text" id="seqManualInput" placeholder="Ej. 1, 2, 3, 4" style="width:220px;">
+          <button class="btn" onclick="Seq.useManualArray()">✎ Usar mi arreglo</button>
+        </div>
+        <div class="controls-row">
+          <span class="field-label">Objetivo:</span>
+          <input type="number" id="seqTarget" placeholder="Ej. 42">
+          <button class="btn primary" onclick="Seq.start()">▶ Iniciar Búsqueda</button>
+        </div>
+        <div class="status-line" id="seqStatus">Genera un arreglo, escribe un valor objetivo y pulsa iniciar.</div>
+        <div class="track">
+          <div class="cells-row" id="seqCells"></div>
+        </div>
+      </div>
+      <div>
+        <div class="panel">
+          <h4>Pseudocódigo</h4>
+          <pre class="pcode" id="seqPcode"></pre>
+        </div>
+        <div class="panel">
+          <h4>Registro de Ejecución</h4>
+          <div class="log" id="seqLog"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BINARIA (Interna) ============ -->
+  <section class="screen" data-screen="binaria">
+    <button class="back-btn" onclick="goTo('internas')">← Volver a Internas</button>
+    <h1 class="page-title">Búsqueda Binaria</h1>
+
+    <div class="demo-layout">
+      <div class="panel">
+        <h4>Arreglo Ordenado</h4>
+        <div class="controls-row">
+          <button class="btn" onclick="Bin.newArray()">↻ Nuevo Arreglo</button>
+          <span class="field-label">o ingresa el tuyo:</span>
+          <input type="text" id="binManualInput" placeholder="Ej. 1, 2, 3, 4" style="width:220px;">
+          <button class="btn" onclick="Bin.useManualArray()">✎ Usar mi arreglo</button>
+        </div>
+        <div class="controls-row">
+          <span class="field-label">Objetivo:</span>
+          <input type="number" id="binTarget" placeholder="Ej. 42">
+          <button class="btn primary" onclick="Bin.start()">▶ Iniciar Búsqueda</button>
+        </div>
+        <div class="status-line" id="binStatus">Genera un arreglo, escribe un valor objetivo y pulsa iniciar.</div>
+        <div class="track">
+          <div class="markers-row" id="binMarkers"></div>
+          <div class="cells-row" id="binCells"></div>
+        </div>
+      </div>
+      <div>
+        <div class="panel">
+          <h4>Pseudocódigo</h4>
+          <pre class="pcode" id="binPcode"></pre>
+        </div>
+        <div class="panel">
+          <h4>Registro de Ejecución</h4>
+          <div class="log" id="binLog"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Transformacion de Claves (Interna) ============ -->
+  <section class="screen" data-screen="hashmaps">
+    <button class="back-btn" onclick="goTo('internas')">← Volver a Internas</button>
+    <h1 class="page-title">Hashmaps y Resolución de Colisiones</h1>
+
+    <div class="panel" style="margin-bottom:16px;">
+      <h4>Configuración</h4>
+      <div class="controls-row">
+        <span class="field-label">Método:</span>
+        <select id="hashMethod" onchange="Hash.onMethodChange()">
+          <option value="division">División (Módulo)</option>
+          <option value="cuadrado">Centro del Cuadrado (Mid-Square)</option>
+          <option value="plegamiento">Plegamiento (Folding)</option>
+          <option value="truncamiento">Truncamiento (Extracción)</option>
+          <option value="bases">Cambio de Base (Radix)</option>
+        </select>
+        <span class="field-label">Celdas de Memoria:</span>
+        <select id="hashSize" onchange="Hash.reset()">
+          <option value="10" selected>10</option>
+          <option value="100">100</option>
+        </select>
+        <span class="field-label">Módulo (m) =</span>
+        <select id="hashMMode" onchange="Hash.reset()">
+          <option value="exact" selected>El número elegido</option>
+          <option value="prime">Primo anterior</option>
+        </select>
+        <span class="m-readout" id="hashMReadout">m = 10</span>
+        <button class="btn" onclick="Hash.reset()">↻ Reiniciar Tabla</button>
+      </div>
+      <div class="controls-row">
+        <span class="field-label">Clave (K):</span>
+        <input type="number" id="hashKey" placeholder="Ej. 25">
+        <button class="btn primary" onclick="Hash.insert()">+ Insertar</button>
+        <span class="field-label">Cantidad:</span>
+        <input type="number" id="hashRandomCount" min="1" max="20" value="4" style="width:60px;">
+        <button class="btn" onclick="Hash.insertRandom()">🎲 Insertar Aleatorias</button>
+      </div>
+      <div class="collision-alert" id="hashCollisionAlert" style="display:none;">
+        <div class="collision-alert-text">⚠ <strong>Colisión detectada</strong> — la posición ya está ocupada. Elige cómo resolverla:</div>
+        <div class="collision-alert-actions">
+          <button class="btn" onclick="Hash.chooseCollisionMethod('division')">División (Módulo)</button>
+          <button class="btn" onclick="Hash.chooseCollisionMethod('cuadrado')">Centro del Cuadrado</button>
+          <button class="btn" onclick="Hash.chooseCollisionMethod('plegamiento')">Plegamiento</button>
+          <button class="btn" onclick="Hash.chooseCollisionMethod('truncamiento')">Truncamiento</button>
+          <button class="btn" onclick="Hash.chooseCollisionMethod('bases')">Cambio de Base</button>
+        </div>
+      </div>
+      <div class="status-line" id="hashStatus">Elige un método e inserta un valor de K para comenzar.</div>
+    </div>
+
+    <div class="panel" style="margin-bottom:16px;">
+      <h4>Transformación de K</h4>
+      <div class="calc-strip" id="hashCalc">
+        <div class="calc-box"><span class="calc-label">Clave (K)</span><span class="calc-val" id="calcKey">—</span></div>
+        <div class="calc-arrow">→</div>
+        <div class="calc-box wide"><span class="calc-label">Operación</span><span class="calc-val" id="calcOp">—</span></div>
+        <div class="calc-arrow">→</div>
+        <div class="calc-box"><span class="calc-label">Posición</span><span class="calc-val" id="calcResult">—</span></div>
+      </div>
+    </div>
+
+    <div class="demo-layout">
+      <div class="panel">
+        <h4>Tabla Hash</h4>
+        <div class="track"><div class="buckets-row" id="hashBuckets"></div></div>
+      </div>
+      <div class="panel">
+        <h4>Registro de Inserción</h4>
+        <div class="log" id="hashLog"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BÚSQUEDA POR RESIDUOS (Interna) ============ -->
+  <section class="screen" data-screen="residuos">
+    <button class="back-btn" onclick="goTo('internas')">← Volver a Internas</button>
+    <h1 class="page-title">Búsqueda por Residuos</h1>
+    <p class="page-sub">Árbol digital de búsqueda: cada clave se inserta siguiendo sus bits (residuos de dividir sucesivamente por 2). Un residuo <b>0</b> baja a la izquierda, un residuo <b>1</b> baja a la derecha.</p>
+
+    <div class="demo-layout">
+      <div class="panel">
+        <h4>Árbol de Residuos</h4>
+        <div class="controls-row">
+          <button class="btn" onclick="Res.newTree()">↻ Nuevo Árbol</button>
+          <span class="field-label">o ingresa el tuyo:</span>
+          <input type="text" id="residuosManualInput" placeholder="Ej. 1, 2, 3, 4" style="width:220px;">
+          <button class="btn" onclick="Res.useManualArray()">✎ Usar mi arreglo</button>
+        </div>
+        <div class="controls-row">
+          <span class="field-label">Objetivo:</span>
+          <input type="number" id="residuosTarget" placeholder="Ej. 42">
+          <button class="btn primary" onclick="Res.start()">▶ Iniciar Búsqueda</button>
+        </div>
+        <div class="status-line" id="residuosStatus">Genera un árbol, escribe un valor objetivo y pulsa iniciar.</div>
+        <div class="tree-scroll">
+          <div id="residuosTree"></div>
+        </div>
+      </div>
+      <div>
+        <div class="panel">
+          <h4>Pseudocódigo</h4>
+          <pre class="pcode" id="residuosPcode"></pre>
+        </div>
+        <div class="panel">
+          <h4>Registro de Ejecución</h4>
+          <div class="log" id="residuosLog"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- Scripts -->
+<script src="./src/js/utils.js"></script>
+<script src="./src/js/navigation.js"></script>
+<script src="./src/js/secuencial.js"></script>
+<script src="./src/js/binaria.js"></script>
+<script src="./src/js/hash.js"></script>
+<script src="./src/js/residuos.js"></script>
+<script src="./src/js/ext-secuencial.js"></script>
+<script src="./src/js/ext-binaria.js"></script>
+<script src="./src/js/ext-hash.js"></script>
+<script src="./src/js/ext-hash-dinamico.js"></script>
+<script src="./src/js/arbol-busqueda.js"></script>
+<script src="./src/js/main.js"></script>
+</body>
+</html>
