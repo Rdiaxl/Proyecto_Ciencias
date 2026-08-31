@@ -2,11 +2,11 @@
 
 Aplicación web autocontenida (HTML + CSS + JavaScript puro, sin frameworks ni build tools) que permite visualizar, paso a paso, el funcionamiento de distintos algoritmos de búsqueda. Cada demo sincroniza pseudocódigo, animación de la estructura de datos y un registro (log) de ejecución.
 
-## 🚀 Cómo ejecutarlo
+##  Cómo ejecutarlo
 
 No requiere instalación ni servidor. Basta con abrir `index.html` con doble clic en cualquier navegador moderno (Chrome, Firefox, Edge).
 
-## 📁 Estructura del proyecto
+##  Estructura del proyecto
 
 ```
 .
@@ -28,7 +28,7 @@ No requiere instalación ni servidor. Basta con abrir `index.html` con doble cli
 └── README.md
 ```
 
-## 🧭 Navegación
+##  Navegación
 
 La app funciona como una SPA: todas las "pantallas" (`<section class="screen" data-screen="...">`) viven en el mismo `index.html` y se muestran/ocultan con `goTo(id)` (definido en `navigation.js`). Este módulo también arma el breadcrumb (`.tape`) según el árbol de relaciones padre-hijo definido en `PARENTS`.
 
@@ -49,7 +49,7 @@ home
  └── grafos   (placeholder, pendiente de implementar)
 ```
 
-## 🔍 Algoritmos implementados
+##  Algoritmos implementados
 
 ### Búsquedas internas (en memoria / arreglos)
 
@@ -72,7 +72,7 @@ home
 
 Sección `grafos` presente en la navegación pero aún **sin implementar** (placeholder visible en `index.html`).
 
-## 🧩 Convenciones internas del código
+##  Convenciones internas del código
 
 - **Módulos con IIFE + closures**: cada archivo `.js` expone un único objeto global (`Seq`, `Bin`, `Hash`, `ExtSeq`, `ExtBin`, `ExtHash`, `ExtHashDin`) con métodos públicos, ocultando el estado interno (arreglos, flags `running`, etc.).
 - **`cancelToken`**: patrón usado en las animaciones asíncronas (`async/await` + `delay()`) para poder cancelar una búsqueda en curso si el usuario inicia otra antes de que termine.
@@ -83,7 +83,7 @@ Sección `grafos` presente en la navegación pero aún **sin implementar** (plac
   - `setPcodeActive(preEl, lineNum)`: resalta la línea activa del pseudocódigo.
 - **Inicialización robusta**: `main.js` llama a `newArray()`/`generate()`/`reset()` de cada módulo dentro de bloques `try/catch`, de modo que si un módulo falla al cargar, el resto de la aplicación sigue funcionando.
 
-## 🎨 Estilos
+##  Estilos
 
 Tema oscuro definido con variables CSS en `:root` (`styles.css`), con acentos de color para distintos estados:
 
