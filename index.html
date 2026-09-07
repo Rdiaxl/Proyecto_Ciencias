@@ -406,108 +406,132 @@
 
   <!-- ============ BÚSQUEDA DIGITAL ============ -->
   <section class="screen" data-screen="busqueda-digital">
-    <button class="back-btn" onclick="goTo('arbol')">← Volver a Árbol de Búsquedas</button>
-    <h1 class="page-title">Búsqueda Digital</h1>
-    <p class="page-sub">Cada letra se codifica según su posición en el alfabeto (A=1 … Z=26) en binario de 5 bits. Las letras se insertan en el orden en que aparecen en la palabra: en el nivel 1 se compara el 1º bit, en el nivel 2 el 2º bit, y así sucesivamente. Bit <b>0</b> = izquierda, bit <b>1</b> = derecha.</p>
+  <button class="back-btn" onclick="goTo('arbol')">← Volver a Árbol de Búsquedas</button>
+  <h1 class="page-title">Búsqueda Digital</h1>
+  <p class="page-sub">Cada letra se codifica según su posición en el alfabeto (A=1 … Z=26) en binario de 5 bits. En cada nivel se compara el bit correspondiente; si el nodo está vacío, ahí se guarda la letra. Bit <b>0</b> = izquierda, bit <b>1</b> = derecha.</p>
 
-    <div class="demo-layout">
-      <div class="panel">
-        <h4>Árbol de Búsqueda Digital</h4>
-        <div class="controls-row">
-          <span class="field-label">Palabra:</span>
-          <input type="text" id="digitalWordInput" placeholder="Ej. PRUEBA" value="PRUEBA" style="width:220px; text-transform:uppercase;">
-          <button class="btn primary" onclick="Digital.build()">▶ Generar Árbol</button>
-        </div>
-        <div class="status-line" id="digitalStatus">Escribe una palabra y pulsa generar para ver cómo se insertan sus letras.</div>
-        <div class="letter-strip" id="digitalStrip"></div>
-        <div class="tree-scroll">
-          <div id="digitalTree"></div>
-        </div>
+  <div class="demo-layout">
+    <div class="panel">
+      <h4>Árbol de Búsqueda Digital</h4>
+      <div class="controls-row">
+        <span class="field-label">Letra:</span>
+        <input type="text" id="digitalLetterInput" placeholder="Ej. P" maxlength="2" style="width:60px; text-transform:uppercase;">
+        <button class="btn primary" onclick="Digital.insertLetter()">+ Insertar</button>
+        <button class="btn primary ghost" onclick="Digital.searchLetter()" style="border-color:var(--accent-scan); color:var(--accent-scan);">🔍 Buscar</button>
+        <button class="btn primary ghost" onclick="Digital.deleteLetter()" style="border-color:var(--accent-collision); color:var(--accent-collision);">🗑 Eliminar</button>
       </div>
-      <div>
-        <div class="panel">
-          <h4>Pseudocódigo</h4>
-          <pre class="pcode" id="digitalPcode"></pre>
-        </div>
-        <div class="panel">
-          <h4>Registro de Ejecución</h4>
-          <div class="log" id="digitalLog"></div>
-        </div>
+      <div class="controls-row">
+        <span class="field-label">o carga una palabra completa (reinicia el árbol):</span>
+        <input type="text" id="digitalWordInput" placeholder="Ej. PRUEBA" value="PRUEBA" style="width:180px; text-transform:uppercase;">
+        <button class="btn" onclick="Digital.loadWord()">⚡ Cargar Palabra</button>
+        <button class="btn" onclick="Digital.reset()">↻ Reiniciar Árbol</button>
+      </div>
+      <div class="status-line" id="digitalStatus">Inserta letras una por una, o carga una palabra completa para empezar.</div>
+      <div class="letter-strip" id="digitalStrip"></div>
+      <div class="tree-scroll">
+        <div id="digitalTree"></div>
       </div>
     </div>
-  </section>
+    <div>
+      <div class="panel">
+        <h4>Pseudocódigo</h4>
+        <pre class="pcode" id="digitalPcode"></pre>
+      </div>
+      <div class="panel">
+        <h4>Registro de Ejecución</h4>
+        <div class="log" id="digitalLog"></div>
+      </div>
+    </div>
+  </div>
+</section>
 
   <!-- ============ BÚSQUEDA POR RESIDUOS ============ -->
   <section class="screen" data-screen="busqueda-residuos">
-    <button class="back-btn" onclick="goTo('arbol')">← Volver a Árbol de Búsquedas</button>
-    <h1 class="page-title">Búsqueda por Residuos</h1>
-    <p class="page-sub">Árbol trie binario: los nodos intermedios (puntos) son solo caminos vacíos; las letras únicamente se guardan al final, en las hojas, tras recorrer los 5 bits de su código. Las letras con el mismo prefijo comparten camino y solo se bifurcan donde sus bits difieren. Bit <b>0</b> = izquierda, bit <b>1</b> = derecha.</p>
+  <button class="back-btn" onclick="goTo('arbol')">← Volver a Árbol de Búsquedas</button>
+  <h1 class="page-title">Búsqueda por Residuos</h1>
+  <p class="page-sub">Trie binario: los nodos intermedios (puntos) son solo caminos vacíos; las letras únicamente se guardan al final, en las hojas, tras recorrer los 5 bits de su código. Bit <b>0</b> = izquierda, bit <b>1</b> = derecha.</p>
 
-    <div class="demo-layout">
-      <div class="panel">
-        <h4>Trie Binario de Residuos</h4>
-        <div class="controls-row">
-          <span class="field-label">Palabra:</span>
-          <input type="text" id="resTrieWordInput" placeholder="Ej. PRUEBA" value="PRUEBA" style="width:220px; text-transform:uppercase;">
-          <button class="btn primary" onclick="Residuos.build()">▶ Generar Árbol</button>
-        </div>
-        <div class="status-line" id="resTrieStatus">Escribe una palabra y pulsa generar para ver cómo se crea el camino de cada letra.</div>
-        <div class="letter-strip" id="resTrieStrip"></div>
-        <div class="tree-scroll">
-          <div id="resTrieTree"></div>
-        </div>
+  <div class="demo-layout">
+    <div class="panel">
+      <h4>Trie Binario de Residuos</h4>
+      <div class="controls-row">
+        <span class="field-label">Letra:</span>
+        <input type="text" id="resTrieLetterInput" placeholder="Ej. P" maxlength="2" style="width:60px; text-transform:uppercase;">
+        <button class="btn primary" onclick="Residuos.insertLetter()">+ Insertar</button>
+        <button class="btn primary ghost" onclick="Residuos.searchLetter()" style="border-color:var(--accent-scan); color:var(--accent-scan);">🔍 Buscar</button>
+        <button class="btn primary ghost" onclick="Residuos.deleteLetter()" style="border-color:var(--accent-collision); color:var(--accent-collision);">🗑 Eliminar</button>
       </div>
-      <div>
-        <div class="panel">
-          <h4>Pseudocódigo</h4>
-          <pre class="pcode" id="resTriePcode"></pre>
-        </div>
-        <div class="panel">
-          <h4>Registro de Ejecución</h4>
-          <div class="log" id="resTrieLog"></div>
-        </div>
+      <div class="controls-row">
+        <span class="field-label">o carga una palabra completa (reinicia el árbol):</span>
+        <input type="text" id="resTrieWordInput" placeholder="Ej. PRUEBA" value="PRUEBA" style="width:180px; text-transform:uppercase;">
+        <button class="btn" onclick="Residuos.loadWord()">⚡ Cargar Palabra</button>
+        <button class="btn" onclick="Residuos.reset()">↻ Reiniciar Árbol</button>
+      </div>
+      <div class="status-line" id="resTrieStatus">Inserta letras una por una, o carga una palabra completa para empezar.</div>
+      <div class="letter-strip" id="resTrieStrip"></div>
+      <div class="tree-scroll">
+        <div id="resTrieTree"></div>
       </div>
     </div>
-  </section>
+    <div>
+      <div class="panel">
+        <h4>Pseudocódigo</h4>
+        <pre class="pcode" id="resTriePcode"></pre>
+      </div>
+      <div class="panel">
+        <h4>Registro de Ejecución</h4>
+        <div class="log" id="resTrieLog"></div>
+      </div>
+    </div>
+  </div>
+</section>
 
   <!-- ============ BÚSQUEDA POR RESIDUOS MÚLTIPLES ============ -->
-  <section class="screen" data-screen="busqueda-residuos-multiples">
-    <button class="back-btn" onclick="goTo('arbol')">← Volver a Árbol de Búsquedas</button>
-    <h1 class="page-title">Búsqueda por Residuos Múltiples</h1>
-    <p class="page-sub">En vez de leer 1 bit por nivel, se leen "bloques" de <b>k</b> bits de una vez, así cada nodo puede tener hasta 2<sup>k</sup> ramas. El árbol queda más ancho pero mucho menos profundo. Igual que en Residuos, las letras solo se guardan al final del camino (en las hojas).</p>
+ <section class="screen" data-screen="busqueda-residuos-multiples">
+  <button class="back-btn" onclick="goTo('arbol')">← Volver a Árbol de Búsquedas</button>
+  <h1 class="page-title">Búsqueda por Residuos Múltiples</h1>
+  <p class="page-sub">En vez de leer 1 bit por nivel, se leen "bloques" de <b>k</b> bits de una vez, así cada nodo puede tener hasta 2<sup>k</sup> ramas. Cambiar el tamaño de bloque reinicia el árbol.</p>
 
-    <div class="demo-layout">
-      <div class="panel">
-        <h4>Trie M-ario de Residuos Múltiples</h4>
-        <div class="controls-row">
-          <span class="field-label">Palabra:</span>
-          <input type="text" id="resMulWordInput" placeholder="Ej. PRUEBA" value="PRUEBA" style="width:200px; text-transform:uppercase;">
-          <span class="field-label">Bloques de:</span>
-          <select id="resMulBlockSize">
-            <option value="1">1 bit (2 ramas)</option>
-            <option value="2" selected>2 bits (4 ramas)</option>
-            <option value="5">5 bits (32 ramas, 1 salto)</option>
-          </select>
-          <button class="btn primary" onclick="ResiduosMultiples.build()">▶ Generar Árbol</button>
-        </div>
-        <div class="status-line" id="resMulStatus">Elige el tamaño de bloque y pulsa generar.</div>
-        <div class="letter-strip" id="resMulStrip"></div>
-        <div class="tree-scroll">
-          <div id="resMulTree"></div>
-        </div>
+  <div class="demo-layout">
+    <div class="panel">
+      <h4>Trie M-ario de Residuos Múltiples</h4>
+      <div class="controls-row">
+        <span class="field-label">Bloques de:</span>
+        <select id="resMulBlockSize" onchange="ResiduosMultiples.reset()">
+          <option value="1">1 bit (2 ramas)</option>
+          <option value="2" selected>2 bits (4 ramas)</option>
+          <option value="5">5 bits (32 ramas, 1 salto)</option>
+        </select>
+        <span class="field-label">Letra:</span>
+        <input type="text" id="resMulLetterInput" placeholder="Ej. P" maxlength="2" style="width:60px; text-transform:uppercase;">
+        <button class="btn primary" onclick="ResiduosMultiples.insertLetter()">+ Insertar</button>
+        <button class="btn primary ghost" onclick="ResiduosMultiples.searchLetter()" style="border-color:var(--accent-scan); color:var(--accent-scan);">🔍 Buscar</button>
+        <button class="btn primary ghost" onclick="ResiduosMultiples.deleteLetter()" style="border-color:var(--accent-collision); color:var(--accent-collision);">🗑 Eliminar</button>
       </div>
-      <div>
-        <div class="panel">
-          <h4>Pseudocódigo</h4>
-          <pre class="pcode" id="resMulPcode"></pre>
-        </div>
-        <div class="panel">
-          <h4>Registro de Ejecución</h4>
-          <div class="log" id="resMulLog"></div>
-        </div>
+      <div class="controls-row">
+        <span class="field-label">o carga una palabra completa (reinicia el árbol):</span>
+        <input type="text" id="resMulWordInput" placeholder="Ej. PRUEBA" value="PRUEBA" style="width:180px; text-transform:uppercase;">
+        <button class="btn" onclick="ResiduosMultiples.loadWord()">⚡ Cargar Palabra</button>
+        <button class="btn" onclick="ResiduosMultiples.reset()">↻ Reiniciar Árbol</button>
+      </div>
+      <div class="status-line" id="resMulStatus">Elige el tamaño de bloque, luego inserta letras una por una o carga una palabra.</div>
+      <div class="letter-strip" id="resMulStrip"></div>
+      <div class="tree-scroll">
+        <div id="resMulTree"></div>
       </div>
     </div>
-  </section>
+    <div>
+      <div class="panel">
+        <h4>Pseudocódigo</h4>
+        <pre class="pcode" id="resMulPcode"></pre>
+      </div>
+      <div class="panel">
+        <h4>Registro de Ejecución</h4>
+        <div class="log" id="resMulLog"></div>
+      </div>
+    </div>
+  </div>
+</section>
 
   <!-- ============ ÁRBOL DE HUFFMAN ============ -->
   <section class="screen" data-screen="arbol-huffman">
@@ -566,24 +590,29 @@
   <section class="screen" data-screen="secuencial">
     <button class="back-btn" onclick="goTo('internas')">← Volver a Internas</button>
     <h1 class="page-title">Búsqueda Secuencial</h1>
+    <p class="page-sub">Compara el objetivo con cada elemento, de izquierda a derecha, hasta encontrarlo o llegar al final.</p>
 
     <div class="demo-layout">
       <div class="panel">
-        <h4>Arreglo</h4>
+        <h4>Arreglo en Memoria</h4>
         <div class="controls-row">
-          <button class="btn" onclick="Seq.newArray()">↻ Nuevo Arreglo</button>
-          <span class="field-label">o ingresa el tuyo:</span>
-          <input type="text" id="seqManualInput" placeholder="Ej. 1, 2, 3, 4" style="width:220px;">
-          <button class="btn" onclick="Seq.useManualArray()">✎ Usar mi arreglo</button>
+          <span class="field-label">Cantidad:</span>
+          <input type="number" id="seqRandSize" value="10" min="1" max="20" style="width: 60px;">
+          <button class="btn" onclick="Seq.generate()">🎲 Generar Aleatorio</button>
+          <button class="btn" onclick="Seq.clearArray()">🧹 Limpiar Todo</button>
         </div>
-        <div class="controls-row">
-          <span class="field-label">Objetivo:</span>
-          <input type="number" id="seqTarget" placeholder="Ej. 42">
-          <button class="btn primary" onclick="Seq.start()">▶ Iniciar Búsqueda</button>
+        <div class="controls-row" style="margin-top: 10px;">
+          <span class="field-label">Valor:</span>
+          <input type="number" id="seqInput" placeholder="Ej. 42">
+          <button class="btn primary" onclick="Seq.insert()">+ Insertar</button>
+          <button class="btn primary ghost" onclick="Seq.remove()" style="border-color:var(--accent-collision); color:var(--accent-collision);">🗑 Eliminar</button>
+          <button class="btn primary" onclick="Seq.start()">▶ Buscar</button>
         </div>
-        <div class="status-line" id="seqStatus">Genera un arreglo, escribe un valor objetivo y pulsa iniciar.</div>
+        <div class="status-line" id="seqStatus">El arreglo está vacío. Inserta datos o genera uno aleatorio.</div>
         <div class="track">
-          <div class="cells-row" id="seqCells"></div>
+          <div class="cells-row" id="seqCells">
+            <span style="color:var(--text-dim); font-size:12px; font-family:'JetBrains Mono',monospace;">(Vacío)</span>
+          </div>
         </div>
       </div>
       <div>
@@ -603,25 +632,30 @@
   <section class="screen" data-screen="binaria">
     <button class="back-btn" onclick="goTo('internas')">← Volver a Internas</button>
     <h1 class="page-title">Búsqueda Binaria</h1>
+    <p class="page-sub">Requiere un arreglo ordenado. Descarta la mitad del espacio de búsqueda en cada paso evaluando el elemento central.</p>
 
     <div class="demo-layout">
       <div class="panel">
         <h4>Arreglo Ordenado</h4>
         <div class="controls-row">
-          <button class="btn" onclick="Bin.newArray()">↻ Nuevo Arreglo</button>
-          <span class="field-label">o ingresa el tuyo:</span>
-          <input type="text" id="binManualInput" placeholder="Ej. 1, 2, 3, 4" style="width:220px;">
-          <button class="btn" onclick="Bin.useManualArray()">✎ Usar mi arreglo</button>
+          <span class="field-label">Cantidad:</span>
+          <input type="number" id="binRandSize" value="11" min="1" max="20" style="width: 60px;">
+          <button class="btn" onclick="Bin.generate()">🎲 Generar Aleatorio</button>
+          <button class="btn" onclick="Bin.clearArray()">🧹 Limpiar Todo</button>
         </div>
-        <div class="controls-row">
-          <span class="field-label">Objetivo:</span>
-          <input type="number" id="binTarget" placeholder="Ej. 42">
-          <button class="btn primary" onclick="Bin.start()">▶ Iniciar Búsqueda</button>
+        <div class="controls-row" style="margin-top: 10px;">
+          <span class="field-label">Valor:</span>
+          <input type="number" id="binInput" placeholder="Ej. 42">
+          <button class="btn primary" onclick="Bin.insert()">+ Insertar</button>
+          <button class="btn primary ghost" onclick="Bin.remove()" style="border-color:var(--accent-collision); color:var(--accent-collision);">🗑 Eliminar</button>
+          <button class="btn primary" onclick="Bin.start()">▶ Buscar</button>
         </div>
-        <div class="status-line" id="binStatus">Genera un arreglo, escribe un valor objetivo y pulsa iniciar.</div>
+        <div class="status-line" id="binStatus">El arreglo está vacío. Inserta datos para comenzar.</div>
         <div class="track">
           <div class="markers-row" id="binMarkers"></div>
-          <div class="cells-row" id="binCells"></div>
+          <div class="cells-row" id="binCells">
+            <span style="color:var(--text-dim); font-size:12px; font-family:'JetBrains Mono',monospace;">(Vacío)</span>
+          </div>
         </div>
       </div>
       <div>
@@ -637,81 +671,82 @@
     </div>
   </section>
 
-  <!-- ============ Transformacion de Claves (Interna) ============ -->
+<!-- ============ HASHMAPS (Interna) ============ -->
+ <!-- ============ HASHMAPS (Interna) ============ -->
   <section class="screen" data-screen="hashmaps">
     <button class="back-btn" onclick="goTo('internas')">← Volver a Internas</button>
-    <h1 class="page-title">Hashmaps y Resolución de Colisiones</h1>
+    <h1 class="page-title">Hashmaps (Transferencia de Claves)</h1>
+    <p class="page-sub">Selecciona una función matemática para calcular la dirección de la clave. Si la cubeta se llena, el registro pasa a la <b>Zona de Colisiones</b>.</p>
 
-    <div class="panel" style="margin-bottom:16px;">
-      <h4>Configuración</h4>
-      <div class="controls-row">
-        <span class="field-label">Método:</span>
-        <select id="hashMethod" onchange="Hash.onMethodChange()">
-          <option value="division">División (Módulo)</option>
-          <option value="cuadrado">Centro del Cuadrado (Mid-Square)</option>
-          <option value="plegamiento">Plegamiento (Folding)</option>
-          <option value="truncamiento">Truncamiento (Extracción)</option>
-          <option value="bases">Cambio de Base (Radix)</option>
-        </select>
-        <span class="field-label">Celdas de Memoria:</span>
-        <select id="hashSize" onchange="Hash.reset()">
-          <option value="10" selected>10</option>
-          <option value="100">100</option>
-        </select>
-        <span class="field-label">Módulo (m) =</span>
-        <select id="hashMMode" onchange="Hash.reset()">
-          <option value="exact" selected>El número elegido</option>
-          <option value="prime">Primo anterior</option>
-        </select>
-        <span class="m-readout" id="hashMReadout">m = 10</span>
-        <button class="btn" onclick="Hash.reset()">↻ Reiniciar Tabla</button>
+    <!-- Menú visual de Funciones Hash -->
+    <div class="choice-grid" style="margin-bottom: 20px; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));">
+      <div class="choice-card" id="btn-modulo" onclick="Hash.setMethod('modulo')" style="padding: 16px;">
+        <h3 style="font-size: 15px;">Módulo</h3>
+        <p style="font-size: 12px; margin-top: 4px;">(K mod M)</p>
       </div>
-      <div class="controls-row">
-        <span class="field-label">Clave (K):</span>
-        <input type="number" id="hashKey" placeholder="Ej. 25">
-        <button class="btn primary" onclick="Hash.insert()">+ Insertar</button>
-        <span class="field-label">Cantidad:</span>
-        <input type="number" id="hashRandomCount" min="1" max="20" value="4" style="width:60px;">
-        <button class="btn" onclick="Hash.insertRandom()">🎲 Insertar Aleatorias</button>
+      <div class="choice-card" id="btn-cuadrado" onclick="Hash.setMethod('cuadrado')" style="padding: 16px;">
+        <h3 style="font-size: 15px;">Cuadrado</h3>
+        <p style="font-size: 12px; margin-top: 4px;">Centro del cuadrado</p>
       </div>
-      <div class="collision-alert" id="hashCollisionAlert" style="display:none;">
-        <div class="collision-alert-text">⚠ <strong>Colisión detectada</strong> — la posición ya está ocupada. Elige cómo resolverla:</div>
-        <div class="collision-alert-actions">
-          <button class="btn" onclick="Hash.chooseCollisionMethod('division')">División (Módulo)</button>
-          <button class="btn" onclick="Hash.chooseCollisionMethod('cuadrado')">Centro del Cuadrado</button>
-          <button class="btn" onclick="Hash.chooseCollisionMethod('plegamiento')">Plegamiento</button>
-          <button class="btn" onclick="Hash.chooseCollisionMethod('truncamiento')">Truncamiento</button>
-          <button class="btn" onclick="Hash.chooseCollisionMethod('bases')">Cambio de Base</button>
-        </div>
+      <div class="choice-card" id="btn-plegamiento" onclick="Hash.setMethod('plegamiento')" style="padding: 16px;">
+        <h3 style="font-size: 15px;">Plegamiento</h3>
+        <p style="font-size: 12px; margin-top: 4px;">Suma por partes</p>
       </div>
-      <div class="status-line" id="hashStatus">Elige un método e inserta un valor de K para comenzar.</div>
+      <div class="choice-card" id="btn-truncamiento" onclick="Hash.setMethod('truncamiento')" style="padding: 16px;">
+        <h3 style="font-size: 15px;">Truncamiento</h3>
+        <p style="font-size: 12px; margin-top: 4px;">Dígitos impares</p>
+      </div>
+      <div class="choice-card" id="btn-bases" onclick="Hash.setMethod('bases')" style="padding: 16px;">
+        <h3 style="font-size: 15px;">Bases</h3>
+        <p style="font-size: 12px; margin-top: 4px;">Cambio de base</p>
+      </div>
     </div>
 
     <div class="panel" style="margin-bottom:16px;">
-      <h4>Transformación de K</h4>
+      <h4>Configuración de la Estructura</h4>
+      <div class="controls-row">
+        <span class="field-label">Cubetas (M):</span>
+        <input type="number" id="hashM" value="5" min="2" max="20" style="width: 60px;" onchange="Hash.generate()">
+        <span class="field-label">Capacidad (Filas):</span>
+        <input type="number" id="hashB" value="3" min="1" max="10" style="width: 60px;" onchange="Hash.generate()">
+        <button class="btn" onclick="Hash.generate()">↻ Reiniciar Tabla</button>
+      </div>
+      
+      <div class="controls-row" style="margin-top: 14px;">
+        <span class="field-label">Clave (K):</span>
+        <input type="number" id="hashInput" placeholder="Ej. 125">
+        <button class="btn primary" onclick="Hash.insert()">+ Insertar</button>
+        <button class="btn primary ghost" onclick="Hash.remove()" style="border-color:var(--accent-collision); color:var(--accent-collision);">🗑 Eliminar</button>
+        <button class="btn primary ghost" onclick="Hash.search()" style="border-color:var(--accent-found); color:var(--accent-found);">🔍 Buscar</button>
+      </div>
+      <div class="status-line" id="hashStatus">Configura la tabla e inserta valores para comenzar.</div>
+    </div>
+
+    <div class="panel" style="margin-bottom:16px;">
+      <h4>Transformación Matemática</h4>
       <div class="calc-strip" id="hashCalc">
-        <div class="calc-box"><span class="calc-label">Clave (K)</span><span class="calc-val" id="calcKey">—</span></div>
+        <div class="calc-box"><span class="calc-label">Clave (K)</span><span class="calc-val" id="hCalcKey">—</span></div>
         <div class="calc-arrow">→</div>
-        <div class="calc-box wide"><span class="calc-label">Operación</span><span class="calc-val" id="calcOp">—</span></div>
+        <div class="calc-box wide" style="min-width: 250px;"><span class="calc-label">Operación</span><span class="calc-val" id="hCalcOp" style="font-size:12px;">—</span></div>
         <div class="calc-arrow">→</div>
-        <div class="calc-box"><span class="calc-label">Posición</span><span class="calc-val" id="calcResult">—</span></div>
+        <div class="calc-box"><span class="calc-label">Cubeta</span><span class="calc-val" id="hCalcResult">—</span></div>
       </div>
     </div>
 
     <div class="demo-layout">
-      <div class="panel">
-        <h4>Tabla Hash</h4>
-        <div class="track"><div class="buckets-row" id="hashBuckets"></div></div>
+      <div class="panel" style="overflow: hidden;">
+        <h4>Tabla Hash (Memoria Principal)</h4>
+        <div class="hash-buckets-wrap" id="hashBucketsTrack"></div>
       </div>
       <div class="panel">
-        <h4>Registro de Inserción</h4>
-        <div class="log" id="hashLog"></div>
+        <h4>Registro de Ejecución</h4>
+        <div class="log" id="hashLog" style="height: 180px; margin-bottom: 16px;"></div>
+        
+        <h4>Zona de Colisiones</h4>
+        <div class="overflow-zone" id="hashOverflowTrack"></div>
       </div>
     </div>
   </section>
-
-
-</div>
 
 <!-- Scripts -->
 <script src="./src/js/utils.js"></script>
@@ -723,7 +758,10 @@
 <script src="./src/js/ext-binaria.js"></script>
 <script src="./src/js/ext-hash.js"></script>
 <script src="./src/js/ext-hash-dinamico.js"></script>
-<script src="./src/js/arbol-busqueda.js"></script>
+<script src="./src/js/busqueda-digital.js"></script>
+<script src="./src/js/busqueda-residuos.js"></script>
+<script src="./src/js/residuos-multiples.js"></script>
+<script src="./src/js/huffman.js"></script>
 <script src="./src/js/main.js"></script>
 </body>
 </html>

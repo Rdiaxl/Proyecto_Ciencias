@@ -371,3 +371,28 @@
 .letter-chip.active{ border-color:var(--accent-scan); background:#FDF0E1; box-shadow:0 0 0 3px rgba(194,101,10,.14); }
 .letter-chip.done{ border-color:var(--accent-found); background:#DFF5F2; }
 .letter-chip.dup{ opacity:.5; text-decoration:line-through; }
+
+/* ---------- HASHMAPS (VERTICAL Y COLISIONES) ---------- */
+.hash-buckets-wrap {
+  display: flex; gap: 12px; overflow-x: auto; padding-bottom: 12px; align-items: flex-start;
+}
+.bucket-col {
+  background: var(--bg-panel-2); border: 1px dashed var(--border);
+  border-radius: var(--radius); padding: 10px; display: flex; flex-direction: column;
+  align-items: center; min-width: 64px; transition: border-color .3s;
+}
+.bucket-col.active {
+  border-color: var(--accent-scan); box-shadow: 0 0 0 3px rgba(255,184,77,.15);
+}
+.bucket-col h5 {
+  margin: 0 0 10px 0; font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--text-dim); text-transform: uppercase;
+}
+.bucket-col .cells-vertical {
+  display: flex; flex-direction: column; gap: 6px; width: 100%;
+}
+.overflow-zone {
+  min-height: 70px; background: #1A1423; border: 1px dashed var(--accent-collision);
+  border-radius: var(--radius); padding: 12px; display: flex; flex-wrap: wrap; gap: 8px;
+  align-items: center;
+}
